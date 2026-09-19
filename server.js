@@ -44,6 +44,7 @@ app.get('/api/products/:id', (req, res) => {
     }
 
     res.json(product);
+   
 })
 
 app.post('/api/products', (req, res) => {

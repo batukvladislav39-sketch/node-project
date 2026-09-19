@@ -33,4 +33,33 @@ async function refresh() {
     }
 }
 
+const form = document.querySelector('#form');
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const title = formData.get('title');
+    const price = Number(formData.get('price'));
+    try {
+        const res = await fetch('/api/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, price })
+        })
+
+        if (!res.ok) {
+            const data = await res.json();
+            document.querySelector('#error').textContent = `Error: ${data.error}`;
+            return;
+        }
+
+        form.reset();
+        refresh();
+
+        
+    }
+    catch (error) {
+        document.querySelector('#error').textContent = `Error: ${error.message}`;
+    }
+})
 refresh();
